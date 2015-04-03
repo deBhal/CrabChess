@@ -1,0 +1,34 @@
+td, th, table {
+	background: #f6e8a4;
+	width: 200;
+	height: 20;
+	border-color:#000;
+ 	border: 1px solid black;
+ 	border-collapse: collapse;
+}
+
+td.odd {
+	background: #138f24;
+}
+
+/* player colors */
+td.occupied0 {
+	background: #ff0000;
+}
+
+td.occupied1 {
+	background: #0000ff;
+}
+
+td.occupied2 {
+	background: #ff00ff;
+}
+
+td.occupied3 {
+	background: #00ffff;
+}
+
+td.selected {
+	background: #23ef44;
+}
+
