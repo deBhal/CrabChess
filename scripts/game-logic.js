@@ -2,6 +2,7 @@
  * Crab Chess game logic
  */
 var _ = require( 'lodash' );
+var Emitter = require( 'emitter-component' );
 
 var messages = require( './messages' );
 var Board = require( './Board' );
@@ -10,26 +11,48 @@ var debug = require( 'debug' )( 'crab-chess' );
 var _state;
 
 
-messages.on( 'clicked', function( x, y ) {
-	console.log( 'setSquare( ', arguments, ' )' );
-	_state.selectedPosition.x = x;
-	_state.selectedPosition.y = y;
-	messages.emit( 'stateChanged', _state );
+messages.on( 'clicked', function( x, y, state ) {
+	state = state || _state;
+	var oldx = state.selectedPosition.x,
+		oldy = state.selectedPosition.y;
+
+	if ( oldx === undefined || oldy === undefined ) {
+		state.selectedPosition.x = x;
+		state.selectedPosition.y = y;
+		state.emit( 'changed', _state );
+		return;
+	}
+
+	if ( x === oldx && y === oldy ) {
+		deselectSquare();
+		state.emit( 'changed', _state );
+		return;
+	}
+
+	if ( state.pieceAt( oldx, oldy ) === undefined ) {
+		selectSquare( x, y );
+		return;
+	}
+
+	if ( isValidMove( oldx, oldy, x, y ) ) {
+		console.log( 'move( ', arguments, ' )' );
+		move( oldx, oldy, x, y );
+		deselectSquare();
+		state.emit( 'changed', _state );
+	}
+
+	debug( 'Invalid move!' );
 } );
 
 messages.on( 'addPiece', function( x, y, playerIndex, value, state ) {
-	console.log( 'got addPiece ', x, y, playerIndex, value );
+	debug( 'addPiece', x, y, playerIndex, value );
 	state = state || _state;
 	if ( typeof value === 'undefined' ) {
 		value = playerIndex;
 	}
 
-	_state.board.add( x, y, value );
-} );
-
-messages.on( 'clicked', function( x, y ) {
-	console.log( 'emitting addPiece ', x, y, 8 );
-	messages.emit( 'addPiece', x, y, 0 );
+	state.board.add( x, y, value );
+	state.emit( 'changed' );
 } );
 
 function createState( boardSize, setState ) {
@@ -45,10 +68,15 @@ function createState( boardSize, setState ) {
 			y: 2
 		}
 	};
-	messages.emit( 'stateChanged', _state );
+	Emitter( state );
 	if ( setState || typeof setState === 'undefined' ) {
 		_state = state;
+		_state.emit( 'replaced', state );
 	}
+	state.on( 'changed', function() {
+		messages.emit( 'stateChanged' );
+	} );
+	state.pieceAt = pieceAt.bind( state, state );
 	return state;
 }
 
@@ -58,10 +86,8 @@ function setState( newState ) {
 
 var playerIndex = 0;
 
-function pieceAt( x, y ) {
-	return _.first( state.players, function( playerBoard ) {
-		return v[ x ][ y ];
-	} );
+function pieceAt( state, x, y ) {
+	return state.board[ x ][ y ];
 }
 
 function Player( name ) {
@@ -100,8 +126,34 @@ function checkersSetup( state ) {
 	row( 0, 0 );
 	row( 1, 1 );
 	row( 0, 2 );
+	state.emit( 'changed' );
 
+}
 
+function selectSquare( x, y, state ) {
+	var selectedPosition = ( state || _state ).selectedPosition;
+	selectedPosition.x = x;
+	selectedPosition.y = y;
+	_state.emit( 'changed' );
+}
+
+function deselectSquare( state ) {
+	( state || _state ).selectedPosition = {};
+	_state.emit( 'changed' );
+}
+
+function isValidMove( oldx, oldy, newx, newy, state ) {
+	state = state || _state;
+	return state.pieceAt( oldx, oldy ) !== undefined;
+}
+
+function move( oldx, oldy, newx, newy, state ) {
+	debug( 'move', arguments );
+	state = state || _state;
+	if ( state.board[ newx ][ newy ] !== undefined ) {
+		messages.emit( 'capture', newx, newy, state.board[ newx ][ newy ] );
+	}
+	state.board[ newx ][ newy ] = state.board.remove( oldx, oldy );
 }
 
 module.exports = {

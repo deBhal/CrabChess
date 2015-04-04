@@ -35,13 +35,17 @@ Board.prototype.add = function( x, y, value ) {
 	this[ x ][ y ] = value;
 };
 
-// convenience sugar
-Board.prototype.addPiece = Board.prototype.add;
-
 Board.prototype.remove = function( x, y ) {
 	var piece = this[ x ][ y ];
 	delete this[ x ][ y ];
 	return piece;
 };
+
+// convenience sugar
+Board.prototype.addPiece = Board.prototype.add;
+
+Board.prototype.removePiece = Board.prototype.remove;
+Board.prototype.take = Board.prototype.remove;
+Board.prototype.takePiece = Board.prototype.remove;
 
 module.exports = Board;
