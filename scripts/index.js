@@ -8,6 +8,8 @@ var style = require( './style.css' );
 var state = Logic.createState( 8 ),
 	aPlayer = state.players[ 0 ];
 
+Logic.checkersSetup( state );
+
 React.render( <App state={state}/>, document.getElementById( 'root' ) );
 
 messages.on( 'stateChanged', function( newState ) {

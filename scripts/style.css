@@ -1,5 +1,5 @@
 td, th, table {
-	background: #f6e8a4;
+	background: #138f24;
 	width: 200;
 	height: 20;
 	border-color:#000;
@@ -8,7 +8,7 @@ td, th, table {
 }
 
 td.odd {
-	background: #138f24;
+	background: #f6e8a4;
 }
 
 /* player colors */
