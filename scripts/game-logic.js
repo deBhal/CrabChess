@@ -39,6 +39,7 @@ messages.on( 'clicked', function( x, y, state ) {
 		move( oldx, oldy, x, y );
 		deselectSquare();
 		state.emit( 'changed', _state );
+		return;
 	}
 
 	debug( 'Invalid move!' );
@@ -64,8 +65,53 @@ function createState( boardSize, setState ) {
 			createPlayer( "Player 2" )
 		],
 		selectedPosition: {
-			x: 1,
-			y: 2
+		},
+		get validMovements() {
+			var x, y, i, j, resultBoard, dx, dy,
+				board = this.board,
+				size = board.size;
+
+			if (! this.selectedPosition ) {
+				return [];
+			}
+
+			x = this.selectedPosition.x;
+			y = this.selectedPosition.y;
+			if ( x === undefined ||
+					y === undefined ) {
+				return [];
+			}
+
+
+
+			var currentPlayer = board[ x ][ y ];
+			var playerPieces = board.pieces( currentPlayer );
+
+			// We're going to take advantage of a board acting like a Set;
+			resultBoard = new Board( size * 2 );
+
+			// Brute force all the combinations
+			for ( i = 0; i < playerPieces.length - 1; i++ ) {
+				for ( j = i + 1; j < playerPieces.length; j++ ) {
+					dx = playerPieces[ i ].x - playerPieces[ j ].x;
+					dy = playerPieces[ i ].y - playerPieces[ j ].y;
+					resultBoard[ size + dx ][ size + dy ] = 1;
+					resultBoard[ size - dx ][ size - dy ] = 1;
+				}
+			}
+			return resultBoard.pieces().map( function( piece ) {
+				return {
+					x: piece.x - size,
+					y: piece.y - size
+				};
+			} );
+		},
+		isValidMove: function( x, y ) {
+			var dx = x - this.selectedPosition.x;
+			var dy = y - this.selectedPosition.y;
+			return this.validMovements.some( function( v ) {
+				return v.x == dx && v.y === dy;
+			} );
 		}
 	};
 	Emitter( state );
@@ -77,6 +123,7 @@ function createState( boardSize, setState ) {
 		messages.emit( 'stateChanged' );
 	} );
 	state.pieceAt = pieceAt.bind( state, state );
+
 	return state;
 }
 
@@ -127,7 +174,23 @@ function checkersSetup( state ) {
 	row( 1, 1 );
 	row( 0, 2 );
 	state.emit( 'changed' );
+	return state;
+}
 
+function crabChessSetup( state ) {
+	state = state || _state;
+	debug( 'crabChessSetup' );
+	var board = state.board = new Board( 8 );
+	function row( y ) {
+		for ( var x = 0; x < 8; x++ ) {
+			board.add( x, y, 0 );
+			board.add( x, 7 - y, 1 );
+		}
+	}
+	row( 0 );
+	row( 1 );
+	state.emit( 'changed' );
+	return state;
 }
 
 function selectSquare( x, y, state ) {
@@ -144,7 +207,8 @@ function deselectSquare( state ) {
 
 function isValidMove( oldx, oldy, newx, newy, state ) {
 	state = state || _state;
-	return state.pieceAt( oldx, oldy ) !== undefined;
+	return state.board[ newx ][ newy ] !== state.board[ oldx ][ oldy ] &&
+		state.isValidMove( newx, newy );
 }
 
 function move( oldx, oldy, newx, newy, state ) {
@@ -162,5 +226,6 @@ module.exports = {
 	addPiece: addPiece,
 	setState: setState,
 	getState: getState,
-	checkersSetup: checkersSetup
+	checkersSetup: checkersSetup,
+	crabChessSetup: crabChessSetup
 };

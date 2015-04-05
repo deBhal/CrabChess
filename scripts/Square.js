@@ -8,6 +8,7 @@ var Square = React.createClass( {
 			this.props.y === selectedPosition.y;
 	},
 	className: function() {
+		var state = this.props.state;
 		var classes = [ 'square' ],
 			x = this.props.x,
 			y = this.props.y;
@@ -17,9 +18,12 @@ var Square = React.createClass( {
 		if ( ( x + y ) % 2 ) {
 			classes.push( 'odd' );
 		}
-		var occupyingPlayer = this.props.state.board[ x ][ y ];
+		var occupyingPlayer = state.board[ x ][ y ];
 		if ( typeof occupyingPlayer !== 'undefined' ) {
 			classes.push( 'occupied' + occupyingPlayer );
+		}
+		if ( state.isValidMove( x, y ) ) {
+			classes.push( 'validMove' );
 		}
 		return classes.join( ' ' );
 	},
@@ -27,7 +31,6 @@ var Square = React.createClass( {
 		return <td onClick={ this.onClick } className={ this.className() }></td>;
 	},
 	onClick: function() {
-		console.log( 'clicked ' + this.props.x + ',' + this.props.y );
 		messages.emit( 'clicked', this.props.x, this.props.y );
 	}
 } );

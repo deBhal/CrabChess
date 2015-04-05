@@ -8,7 +8,7 @@ var style = require( './style.css' );
 var state = Logic.createState( 8 ),
 	aPlayer = state.players[ 0 ];
 
-Logic.checkersSetup( state );
+Logic.setState( Logic.crabChessSetup( state ) );
 
 React.render( <App state={state}/>, document.getElementById( 'root' ) );
 

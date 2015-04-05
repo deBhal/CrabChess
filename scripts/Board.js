@@ -12,6 +12,8 @@ function Board( boardSize ) {
 	for ( i = 0; i < boardSize; i++ ) {
 		this[ i ] = {};
 	}
+
+	return this;
 }
 
 Board.prototype.isValidIndex = function( i ) {
@@ -33,6 +35,7 @@ Board.prototype.add = function( x, y, value ) {
 		value = true;
 	}
 	this[ x ][ y ] = value;
+	return this;
 };
 
 Board.prototype.remove = function( x, y ) {
@@ -41,6 +44,37 @@ Board.prototype.remove = function( x, y ) {
 	return piece;
 };
 
+/*
+ * Return an array containing the peices on the board;
+ * @param player [optional] if defined, return only those pieces
+ * with a value equal to player
+ */
+Board.prototype.pieces = function( player ) {
+	var test, i, row, key, piece,
+		result = [];
+	if ( player === undefined ) {
+		test = function() {
+			return true;
+		};
+	} else {
+		test = function( value ) {
+			return value === player;
+		};
+	}
+	for ( i = 0; i < this.size; i++ ) {
+		row = this[ i ];
+		for ( key in row ) {
+			if ( test( piece = row[ key ] ) ) {
+				result.push( {
+					x: i,
+					y: Number( key ),
+					value: piece
+				} );
+			}
+		}
+	}
+	return result;
+};
 // convenience sugar
 Board.prototype.addPiece = Board.prototype.add;
 

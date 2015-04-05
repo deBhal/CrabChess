@@ -1,38 +1,12 @@
-react-hot-boilerplate
+Crab Chess
 =====================
 
-The minimal dev environment to enable live-editing React components.
+In his book _Gödel, Escher, Bach_ Douglas Hofstadter describes a "Crab Chess", which I've implemented here.
 
-### Usage
+In the self-referential spirit of the book, the rules of Crab Chess are that the positions of the pieces determine the available moves.
 
-```
-npm install
-npm start
-open http://localhost:3001
-```
+In this implementation, the relative positions of all of a players pieces describe the available moves.  For example, if a player has two pieces that are horizontally adjacent, then all that players pieces may move one square to the left or right.  If the two pieces are separated by one square, then all the player's pieces can jump one square to the left or right.
 
-Now edit `scripts/App.js`.  
-Your changes will appear without reloading the browser like in [this video](http://vimeo.com/100010922).
+Click on a piece to select it, and you'll see all the available moves lit up in green.
 
-### Using `0.0.0.0` as Host
-
-You may want to change the host in `server.js` and `webpack.config.js` from `localhost` to `0.0.0.0` to allow access from same WiFi network. This is not enabled by default because it is reported to cause problems on Windows. This may also be useful if you're using a VM.
-
-### Missing Features
-
-This boilerplate is purposefully simple to show the minimal configuration for React Hot Loader. For a real project, you'll want to add a separate config for production with hot reloading disabled and minification enabled. You'll also want to add a router, styles and maybe combine dev server with an existing server. This is out of scope of this boilerplate, but you may want to look into [other starter kits](https://github.com/gaearon/react-hot-loader/blob/master/docs/README.md#starter-kits).
-
-### Dependencies
-
-* React
-* Webpack
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
-* [babel-loader](https://github.com/babel/babel-loader)
-* [react-hot-loader](https://github.com/gaearon/react-hot-loader)
-
-### Resources
-
-* [Demo video](http://vimeo.com/100010922)
-* [react-hot-loader on Github](https://github.com/gaearon/react-hot-loader)
-* [Integrating JSX live reload into your workflow](http://gaearon.github.io/react-hot-loader/getstarted/)
-* Ping dan_abramov on Twitter or #reactjs IRC
+I find the result quite interesting, I hope you do too.

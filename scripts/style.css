@@ -1,14 +1,16 @@
-td, th, table {
-	background: #138f24;
-	width: 200;
-	height: 20;
-	border-color:#000;
- 	border: 1px solid black;
+table {
  	border-collapse: collapse;
 }
 
+td {
+	background: #102030;
+	width: 40px;
+	height: 43px; /* I wonder why the height is 3 pixels shorter */
+	border: 1px solid black;
+}
+
 td.odd {
-	background: #f6e8a4;
+	background: #fffad8;
 }
 
 /* player colors */
@@ -30,5 +32,12 @@ td.occupied3 {
 
 td.selected {
 	background: #23ef44;
+}
+
+td.validMove {
+	outline-color: rgba(105,235,105,0.9);
+	outline-width:3px;
+	outline-style: solid;
+	outline-offset: -2px;
 }
 
