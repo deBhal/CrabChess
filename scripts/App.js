@@ -32,6 +32,9 @@ module.exports = React.createClass ( {
 			<p/>
 			<button onClick={ function() { Logic.checkersSetup(); } }>Checkers</button>
 			{/* <p>{ JSON.stringify( this.props ) }</p> */}
+			<p/>
+			<span>Click on a piece to select it and higlight valid moves with green.<p/>
+			Click again on the piece to deselect it, or click on a hilighted sqaure to move there.</span>
 			</span>
 		);
 	}
