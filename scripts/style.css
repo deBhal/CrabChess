@@ -7,6 +7,7 @@ td {
 	width: 40px;
 	height: 43px; /* I wonder why the height is 3 pixels shorter */
 	border: 1px solid black;
+	cursor: pointer;
 }
 
 td.odd {

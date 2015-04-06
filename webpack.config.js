@@ -8,14 +8,14 @@ var stylesheetLoaders = {
 module.exports = {
   devtool: 'eval',
   entry: [
-    'webpack-dev-server/client?http://localhost:3001',
+    'webpack-dev-server/client?http://0.0.0.0:3001',
     'webpack/hot/only-dev-server',
     './scripts/index'
   ],
   output: {
-    path: __dirname + '/gh-pages/',
+    path: __dirname,
     filename: 'bundle.js',
-    publicPath: './'
+    publicPath: '/'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
