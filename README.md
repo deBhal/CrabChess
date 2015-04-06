@@ -1,12 +1,8 @@
-Crab Chess
+<a href="http://debhal.github.io/CrabChess/">Crab Chess </a>
 =====================
 
-In his book _Gödel, Escher, Bach_ Douglas Hofstadter describes a "Crab Chess", which I've implemented here.
+This game is one of the simplest interpretations of the "Self-Modifying Game" described by Douglas Hofstadter in <a href="http://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach"><em>Gödel, Escher, Bach</em></a>, wherein	the rules of a game are encoded in the positions of the peices on a chess-board.<p/>
 
-In the self-referential spirit of the book, the rules of Crab Chess are that the positions of the pieces determine the available moves.
+In this instantiation, only the movements of the pieces change, and valid moves are determined by the relative position of the player's pieces.  Otherwise, we use chess-like captures, alternating turns and an annihilation victory condition ( although only movements and captures are currently implemented ).
 
-In this implementation, the relative positions of all of a players pieces describe the available moves.  For example, if a player has two pieces that are horizontally adjacent, then all that players pieces may move one square to the left or right.  If the two pieces are separated by one square, then all the player's pieces can jump one square to the left or right.
-
-Click on a piece to select it, and you'll see all the available moves lit up in green.
-
-I find the result quite interesting, I hope you do too.
+The game is available at [http://debhal.github.io/CrabChess](http://debhal.github.io/CrabChess)
