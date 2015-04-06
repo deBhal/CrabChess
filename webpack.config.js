@@ -15,7 +15,7 @@ module.exports = {
   output: {
     path: __dirname + '/gh-pages/',
     filename: 'bundle.js',
-    publicPath: '/scripts/'
+    publicPath: './'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
