@@ -13,7 +13,7 @@ module.exports = {
     './scripts/index'
   ],
   output: {
-    path: __dirname + '/scripts/',
+    path: __dirname + '/gh-pages/',
     filename: 'bundle.js',
     publicPath: '/scripts/'
   },
